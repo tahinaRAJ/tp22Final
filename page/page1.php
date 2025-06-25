@@ -1,6 +1,7 @@
 <?php
 require("../inc/fonctions.php");
 $departement = afficher_departement();
+$current_manager = afficher_current_manager();
 ?>
 
 <!DOCTYPE html>
@@ -21,22 +22,30 @@ $departement = afficher_departement();
                 <tr>
                     <th>Numéro</th>
                     <th>Nom</th>
+                    <th>Manager actuelle</th>
                 </tr>
             <head>
             <body>
                 <?php foreach ($departement as $dept): ?>
                 <tr>
                     <td>
-                        <a href="employes.php?dept_no=<?= urlencode($dept['dept_no']) ?>">
+                        <a href="employes.php?dept_no=<?= ($dept['dept_no']) ?>">
                             <?= htmlspecialchars($dept['dept_no']) ?>
                         </a>
                     </td>
                     <td>
-                        <a href="employes.php?dept_no=<?= urlencode($dept['dept_no']) ?>">
+                        <a href="employes.php?dept_no=<?= ($dept['dept_no']) ?>">
                             <?= htmlspecialchars($dept['dept_name']) ?>
                         </a>
                     </td>
+                    <td>
+                        <?php foreach ($current_manager as $manager): ?>
+                            <?php if ($manager['dept_no'] == $dept['dept_no']): ?>
+                                <?= htmlspecialchars($manager['first_name']) . ' ' . htmlspecialchars($manager['last_name']) ?>
+                            <?php endif; ?>
+                    </td>
                 </tr>
+                <?php endforeach; ?>
                 <?php endforeach; ?>
             </body>
     </main>
