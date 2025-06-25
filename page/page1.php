@@ -1,7 +1,6 @@
 <?php
 require("../inc/fonctions.php");
 $departement = afficher_departement();
-$current_manager = afficher_current_manager();
 ?>
 
 <!DOCTYPE html>
@@ -29,23 +28,28 @@ $current_manager = afficher_current_manager();
                 <?php foreach ($departement as $dept): ?>
                 <tr>
                     <td>
-                        <a href="employes.php?dept_no=<?= ($dept['dept_no']) ?>">
+                        <a href="employes.php?dept_no=<?= urlencode($dept['dept_no']) ?>">
                             <?= htmlspecialchars($dept['dept_no']) ?>
                         </a>
                     </td>
                     <td>
-                        <a href="employes.php?dept_no=<?= ($dept['dept_no']) ?>">
+                        <a href="employes.php?dept_no=<?= urlencode($dept['dept_no']) ?>">
                             <?= htmlspecialchars($dept['dept_name']) ?>
                         </a>
                     </td>
                     <td>
-                        <?php foreach ($current_manager as $manager): ?>
-                            <?php if ($manager['dept_no'] == $dept['dept_no']): ?>
-                                <?= htmlspecialchars($manager['first_name']) . ' ' . htmlspecialchars($manager['last_name']) ?>
-                            <?php endif; ?>
+                        <?php 
+                        $managers = afficher_current_manager($dept['dept_no']);
+                        if (!empty($managers)) {
+                            foreach ($managers as $manager) {
+                                echo htmlspecialchars($manager['first_name']) . ' ' . htmlspecialchars($manager['last_name']);
+                            }
+                        } else {
+                            echo "Aucun manager actuel";
+                        }
+                        ?>
                     </td>
                 </tr>
-                <?php endforeach; ?>
                 <?php endforeach; ?>
             </body>
     </main>
